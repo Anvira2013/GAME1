@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Гра: Обведи літеру</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .letter {
+      display: inline-block;
+      font-size: 40px;
+      padding: 20px;
+      margin: 10px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    .highlight {
+      border-color: green;
+      background-color: #d4ffd4;
+    }
+    .wrong {
+      border-color: red;
+      background-color: #ffd4d4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Обведи літеру: <span id="target-letter"></span></h1>
+  <div id="letters-container"></div>
+
+  <script>
+    const alphabet = [...'АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ'];
+    const container = document.getElementById('letters-container');
+    const target = document.getElementById('target-letter');
+
+    function randomLetter() {
+      return alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+
+    function generateGame() {
+      container.innerHTML = '';
+      const correctLetter = randomLetter();
+      target.textContent = correctLetter;
+
+      const letters = new Set();
+      letters.add(correctLetter);
+      while (letters.size < 6) {
+        letters.add(randomLetter());
+      }
+
+      [...letters].sort(() => 0.5 - Math.random()).forEach(letter => {
+        const span = document.createElement('span');
+        span.classList.add('letter');
+        span.textContent = letter;
+        span.onclick = () => {
+          if (letter === correctLetter) {
+            span.classList.add('highlight');
+            setTimeout(generateGame, 1000);
+          } else {
+            span.classList.add('wrong');
+          }
+        };
+        container.appendChild(span);
+      });
+    }
+
+    generateGame();
+  </script>
+</body>
+</html>
